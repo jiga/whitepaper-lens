@@ -1,11 +1,8 @@
 # Required Libraries
 import streamlit as st
-import requests
 import pdfplumber
-# from io import BytesIO
 import plotly.graph_objects as go
-from typing import Optional
-import json
+from langchain.text_splitter import CharacterTextSplitter
 
 from langchain.chains.openai_functions import (
     create_openai_fn_chain,
@@ -17,7 +14,7 @@ from langchain.schema import HumanMessage, SystemMessage
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from typing import Sequence
-from langchain.chat_models import ChatAnthropic
+# from langchain.chat_models import ChatAnthropic
 
 load_dotenv()
 
@@ -170,7 +167,15 @@ def analyze(text):
 
     chain = create_openai_fn_chain([Score], llm, prompt, verbose=True)
 
-    text_chunks = [text[i:i + 13000] for i in range(0, len(text), 13000)]
+    # text_chunks = [text[i:i + 13000] for i in range(0, len(text), 13000)]
+    text_splitter = CharacterTextSplitter(        
+        separator = "\n",
+        chunk_size = 13000,
+        chunk_overlap  = 200,
+        length_function = len,
+    )
+
+    text_chunks = text_splitter.split_text(text)
     for text_chunk in text_chunks:
         score = summon_llm(text_chunk, llm, prompt, chain)
     return score['score']
