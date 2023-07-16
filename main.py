@@ -2,7 +2,7 @@
 import streamlit as st
 import requests
 import pdfplumber
-from io import BytesIO
+# from io import BytesIO
 import plotly.graph_objects as go
 from typing import Optional
 import json
@@ -100,16 +100,16 @@ running_score = {
 if "score" not in st.session_state:
         st.session_state["score"] = running_score
 
-def download_pdf(url):
-   # Download the PDF
-    response = requests.get(url, allow_redirects=True)
-    pdf_file = BytesIO(response.content)
+# def download_pdf(url):
+#    # Download the PDF
+#     response = requests.get(url, allow_redirects=True)
+#     pdf_file = BytesIO(response.content)
 
-    # Parse the PDF with pdfplumber
-    with pdfplumber.open(pdf_file) as pdf:
-        text = ''
-        for page in pdf.pages:
-            text += page.extract_text()
+#     # Parse the PDF with pdfplumber
+#     with pdfplumber.open(pdf_file) as pdf:
+#         text = ''
+#         for page in pdf.pages:
+#             text += page.extract_text()
 
 llm = ChatOpenAI(model="gpt-3.5-turbo-16k-0613", temperature=0,  max_tokens=4096, verbose=False)
 # llm = ChatOpenAI(model="gpt-4-0613", temperature=0,  max_tokens=4096, verbose=True)
@@ -211,6 +211,7 @@ if uploaded_file is not None:
 
 if text:
     # Analyze the PDF
+    st.session_state["score"] = running_score
     # st.write('Analyzing Whitepaper...')
     with st.spinner('🧠 Analyzing Whitepaper... '):
         scores = analyze(text)
