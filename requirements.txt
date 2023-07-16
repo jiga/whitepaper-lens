@@ -1,0 +1,11 @@
+streamlit
+requests
+pdfplumber
+io
+plotly
+typing
+json
+langchain
+pydantic
+python-dotenv
+
