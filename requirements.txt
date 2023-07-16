@@ -6,4 +6,4 @@ typing
 langchain
 pydantic
 python-dotenv
-
+openai
