@@ -187,6 +187,29 @@ def analyze(text):
     # print(st.session_state.score)
     # return scores.dict()['score']
 
+
+def update_score_with_emoji(scores):
+  emoji_mapping = {
+    "Offeror/Issuer Information": "📚",
+    "Trading Platform Operator Information": "🖥️",
+    "Crypto-Asset Project Information": "🚀",
+    "Offer to the Public": "📣",
+    "Crypto-Asset Details": "🧩",
+    "Non-Approval Statement": "⚠️",
+    "Future Value Statement": "📈",
+    "Management Body Statement": "👨‍💼👩‍💼",
+    "Summary": "📝",
+    "Risk Factors": "⚖️",
+    "Climate Impact": "🌍",
+    "Language and Format": "🌐"
+  }
+
+  for score in scores:
+    score['name'] = emoji_mapping[score['name']] + " " + score['name']
+
+  return scores
+
+
 # Streamlit App
 st.title('🔍 Whitepaper Lens')
 
@@ -219,7 +242,7 @@ if text:
     st.session_state["score"] = running_score
     # st.write('Analyzing Whitepaper...')
     with st.spinner('🧠 Analyzing Whitepaper... '):
-        scores = analyze(text)
+        scores = update_score_with_emoji(analyze(text))
 
         # Display the scores
         # st.write('Analysis Results:')
